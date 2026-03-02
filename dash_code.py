@@ -24,11 +24,9 @@ health_long = outcomes.melt(
     value_name="Rate"
 )
 
-health_long
-
 st.set_page_config(page_title="")
 
-st.title("# Defining Parameters of Carbon Emissions and their Effects on Community Health in Illinois by County")
+st.title("Defining Parameters of Carbon Emissions and their Effects on Community Health in Illinois by County")
 st.write("How do varying carbon emissions affect the AQI of Illinois and what effects do they have on health? We generated graphs tracking various factors, measured by county.")
 
 ##Load Data
@@ -54,11 +52,11 @@ param = st.selectbox("Select Health Outcome", ["Asthma Incidence", "COPD Deaths"
 st.subheader(f"Selected View: {param}")
 
 color_palette = [
-    "#cf1020", # 
-    "#A4343A", # 
-    "#800000", # 
-    "#550000", # 
-    "#2c1608"  # 
+    "#cf1020",  
+    "#A4343A",  
+    "#800000",  
+    "#550000",  
+    "#2c1608"    
 ]
 
 carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
