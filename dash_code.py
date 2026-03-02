@@ -46,7 +46,7 @@ st.write("How do varying carbon emissions affect the AQI of Illinois and what ef
 ##User Inputs
 
 param = st.sidebar.multiselect(
-    "Select Health Outcome", 
+    "Select Health Outcome:", 
     options=sorted(health_long["Health Outcome"].unique()),
     default=sorted(health_long["Health Outcome"].unique())
 )
