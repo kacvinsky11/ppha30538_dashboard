@@ -45,20 +45,30 @@ st.write("How do varying carbon emissions affect the AQI of Illinois and what ef
 
 ##User Inputs
 
-param = st.selectbox("Select Health Outcome", ["Asthma Incidence", "COPD Deaths", "COVID Deaths", "Heart Failures", "Stroke Deaths"])
-st.subheader(f"Selected View: {param}")
-
-carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
-    x=alt.X("County:N", title="Counties", sort=None),
-    y=alt.Y("Rate:Q", title="Death/Incidence Rates"),
-    color=alt.Color("Health Outcome:N",
-                    scale=alt.Scale(range=color_palette),
-                    title="Health Outcome"),
-    tooltip=["County", "Rate", "Health Outcome"]
-).properties(
-    width=600,
-    height=400,
-    title="Health Outcomes Rates by County from Most to Least (Top 20 Carbon Emitting in Illinois)"
+param = st.sidebar.multiselect(
+    "Select Health Outcome", 
+    options=sorted(health_long["Health Outcome"].unique()),
+    default=sorted(health_long["Health Outcome"].unique())
 )
 
-st.altair_chart(carb_chart, use_container_width=True)
+st.subheader(f"Selected View: {param}")
+
+filtered_health = health_long[health_long["Health Outcome"].isin(param)]
+
+if len(param) == 0:
+    st.warning("Please select at least one health outcome.")
+else:
+    carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
+        x=alt.X("County:N", title="Counties", sort=None),
+        y=alt.Y("Rate:Q", title="Death/Incidence Rates"),
+        color=alt.Color("Health Outcome:N",
+                        scale=alt.Scale(range=color_palette),
+                        title="Health Outcome"),
+        tooltip=["County", "Rate", "Health Outcome"]
+    ).properties(
+        width=600,
+        height=400,
+        title="Health Outcomes Rates by County from Most to Least (Top 20 Carbon Emitting in Illinois)"
+    )
+
+    st.altair_chart(carb_chart, use_container_width=True)
