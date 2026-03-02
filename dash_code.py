@@ -9,6 +9,23 @@ DASHBOARD_DIR = "data/derived-data"
 HEALTH_FILE = {f"{DASHBOARD_DIR}/outcomes.csv"}
 AQI_FILE = {f"{DASHBOARD_DIR}/aqi.csv"}
 
+outcomes = pd.read_csv("outcomes.csv")
+
+health_long = outcomes.melt(
+    id_vars="County",
+    value_vars=[
+        "Asthma Incidence",
+        "COPD Deaths",
+        "COVID Deaths",
+        "Heart Failures",
+        "Stroke Deaths",
+    ],
+    var_name="Health Outcome",
+    value_name="Rate"
+)
+
+health_long
+
 st.set_page_config(page_title="")
 
 st.title("# Defining Parameters of Carbon Emissions and their Effects on Community Health in Illinois by County")
@@ -16,27 +33,24 @@ st.write("How do varying carbon emissions affect the AQI of Illinois and what ef
 
 ##Load Data
 
-@st.cache_data
-def load_outcomes():
-    outcomes = pd.read_csv("data/derived-data/outcomes.csv")
-    return outcomes
-
-@st.cache_data
-def load_aqi():
-    aqi = pd.read_csv("data/derived-data/aqi.csv")
-    return aqi
-
-outcomes_df = load_outcomes()
-aqi_df = load_aqi()
-
-health_outcomes = [col for col in outcomes_df.columns if col not in ["County", "Total Direct Emissions", "Population"]]
 
 
 ##User Inputs
 
-param = st.selectbox("Health Outcome", ["", "", "", "", ""])
+param = st.selectbox("Select Health Outcome", ["Asthma Incidence", "COPD Deaths", "COVID Deaths", "Heart Failures", "Stroke Deaths"])
+st.subheader(f"Selected View: {param}")
 
-if "" not in st.session_state:
-    st.session_state
+carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
+    x=alt.X("County:N", title="Counties", sort=None),
+    y=alt.Y("Rate:Q", title="Death/Incidence Rates"),
+    color=alt.Color("Health Outcome:N",
+                    scale=alt.Scale(range=color_palette),
+                    title="Health Outcome"),
+    tooltip=["County", "Rate", "Health Outcome"]
+).properties(
+    width=600,
+    height=400,
+    title="Health Outcomes Rates by County from Most to Least (Top 20 Carbon Emitting in Illinois)"
+)
 
-st.altair_chart()
+st.altair_chart(carb_chart, use_container_width=True)
