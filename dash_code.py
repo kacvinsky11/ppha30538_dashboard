@@ -59,17 +59,22 @@ color_palette = [
     "#2c1608"    
 ]
 
-carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
-    x=alt.X("County:N", title="Counties", sort=None),
-    y=alt.Y("Rate:Q", title="Death/Incidence Rates"),
-    color=alt.Color("Health Outcome:N",
-                    scale=alt.Scale(range=color_palette),
-                    title="Health Outcome"),
-    tooltip=["County", "Rate", "Health Outcome"]
-).properties(
-    width=600,
-    height=400,
-    title="Health Outcomes Rates by County from Most to Least (Top 20 Carbon Emitting in Illinois)"
-)
+filtered_health = health_long[health_long["Health Outcome"].isin(param)]
 
-st.altair_chart(carb_chart, use_container_width=True)
+if len(param) == 0:
+    st.warning("Please select at least one health outcome.")
+else:
+    carb_chart = alt.Chart(health_long).mark_line(point=True).encode(
+        x=alt.X("County:N", title="Counties", sort=None),
+        y=alt.Y("Rate:Q", title="Death/Incidence Rates"),
+        color=alt.Color("Health Outcome:N",
+                        scale=alt.Scale(range=color_palette),
+                        title="Health Outcome"),
+        tooltip=["County", "Rate", "Health Outcome"]
+    ).properties(
+        width=600,
+        height=400,
+        title="Health Outcomes Rates by County from Most to Least (Top 20 Carbon Emitting in Illinois)"
+    )
+
+    st.altair_chart(carb_chart, use_container_width=True)
