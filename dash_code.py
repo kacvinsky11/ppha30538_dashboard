@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import altair as alt
-import json
 
 DASHBOARD_DIR = "data/derived-data"
 
@@ -10,19 +8,33 @@ HEALTH_FILE = {f"{DASHBOARD_DIR}/outcomes.csv"}
 AQI_FILE = {f"{DASHBOARD_DIR}/aqi.csv"}
 
 outcomes = pd.read_csv("data/derived-data/outcomes.csv")
+aqi = pd.read_csv("daily_aqi_by_county_2025.csv")
 
-health_long = outcomes.melt(
-    id_vars="County",
-    value_vars=[
-        "Asthma Incidence",
-        "COPD Deaths",
-        "COVID Deaths",
-        "Heart Failures",
-        "Stroke Deaths",
-    ],
-    var_name="Health Outcome",
-    value_name="Rate"
+st.set_page_config(page_title="Illinois Emissions and Health Dashboard", layout="wide")
+
+st.title("Impact of Carbon Emissions on Community Health in Illinois by County")
+st.caption("Exploring the relationship between air quality and carbon emissions on pertinent health outcomes in Illinois, with the goal to determine whether high emissions correlates with higher health outcomes")
+
+color_palette = [
+    "#041556", # 
+    "#748dc6", # 
+    "#c3e8ff", # 
+    "#601414", # 
+    "#c48f8f"  # 
+]
+
+st.sidebar.title("Dashboard Navigation")
+section = st.sidebar.radio(
+    "Select Visualization",
+    ["Health Outcomes", "Air Quality Index (AQI)"]
 )
+st.sidebar.caption("Data Analytics and Visualization for Public Policy")
+"""Sidebar"""
+
+if section == "Health Outcomes":
+
+    st.header("Health Outcomes in Top 20 Carbon-Emitting Counties")
+    st.write("This visualization compares the most common health outcomes associated with carbon emissions across Illinois counties, organized from highest emitting counties to least.")
 
 st.set_page_config(page_title="")
 
@@ -45,6 +57,7 @@ aqi_df = load_aqi()
 
 health_outcomes = [col for col in outcomes_df.columns if col not in ["County", "Total Direct Emissions", "Population"]]
 
+        st.altair_chart(carb_chart, use_container_width=True)
 
 ##User Inputs
 color_palette = [
