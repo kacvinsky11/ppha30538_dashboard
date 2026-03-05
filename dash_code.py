@@ -86,7 +86,7 @@ elif section == "Air Quality Index (AQI)":
     st.header("Air Quality Index (AQI) by Defining Parameter")
     st.write("This chart displays AQI levels across Illinois counties, organized from most emitting counties to least, separated by deifning pollutants." \
     "" \
-    "By separating by pollutant, we can identify which contaminants are driving poor air quality in specific counties.")
+    "By separating by pollutant, we can identify which contaminants are contributing to poor air quality per county.")
 
     aqi_chart = alt.Chart(aqi).mark_bar().encode(
         x=alt.X("County:N", title="Counties in Illinois", sort=None),
