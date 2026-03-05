@@ -3,7 +3,6 @@
 This project processes and visualizes carbon emissions by county in Illinois and tracks their relationship to public health outcomes across the state, including cancer, COPD, asthma, and worsening complications for Covid-19, stroke, and heart failure.
 
 > University of Chicago Harris School of Public Policy, Winter 2026
-
 > **Authors**: Micah Slaughter and Jonathan Kacvinsky
 
 # Research Question
