@@ -75,6 +75,8 @@ The interactive dashboard allows users to:
 + Isolate and compare how health outcomes vary with carbon emissions across the 20 highest polluting counties in Illinois
 + Compare how particulat matter contributes to air quality per county
 
+Link to [dashboard](https://ppha30538dashboard-g7lvuvd2jxwfwpgg2mnhqb.streamlit.app/)
+
 # Data Sources
 
 
