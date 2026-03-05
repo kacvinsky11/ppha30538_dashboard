@@ -30,7 +30,7 @@ section = st.sidebar.radio(
     ["Health Outcomes", "Air Quality Index (AQI)"]
 )
 st.sidebar.caption("Data Analytics and Visualization for Public Policy")
-"""Sidebar"""
+#"""Sidebar"""
 
 if section == "Health Outcomes":
 
